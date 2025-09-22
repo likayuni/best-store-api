@@ -38,7 +38,7 @@ server.use(jsonServer.bodyParser);
 
 // GET /products/:id
 server.get("/products/:id", (req, res) => {
-  const id = Number(req.params.id); // pastikan id angka
+  const id = Number(req.params.id);
   const db = router.db.getState();
   const product = db.products.find((p) => Number(p.id) === id);
   if (!product) return res.status(404).json({ message: "Product not found" });
@@ -95,7 +95,7 @@ server.post("/products", upload.single("image"), (req, res) => {
 
 // PATCH /products/:id
 server.patch("/products/:id", upload.single("image"), (req, res) => {
-  const id = Number(req.params.id); // pastikan id angka
+  const id = Number(req.params.id);
   const db = router.db.get("products");
   const product = db.find({ id }).value();
 
@@ -115,6 +115,34 @@ server.patch("/products/:id", upload.single("image"), (req, res) => {
     .write();
 
   res.json(db.find({ id }).value());
+});
+
+// DELETE /products/:id
+server.delete("/products/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const db = router.db.get("products");
+  const product = db.find({ id }).value();
+
+  if (!product) {
+    return res.status(404).json({ message: "Product not found" });
+  }
+
+  // hapus file gambar jika ada
+  if (product.imageFilename) {
+    const imagePath = path.join(
+      __dirname,
+      "public/images",
+      product.imageFilename
+    );
+    if (fs.existsSync(imagePath)) {
+      fs.unlinkSync(imagePath);
+    }
+  }
+
+  // hapus produk dari db.json
+  db.remove({ id }).write();
+
+  res.json({ message: "Product deleted successfully", id });
 });
 
 // gunakan router default JSON Server

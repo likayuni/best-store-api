@@ -9,6 +9,16 @@
       "imageFilename": "1758538528624_razer_book13.jpeg",
       "createdAt": "2025-09-22T10:55:28.632Z",
       "id": 1
+    },
+    {
+      "name": "msi katana",
+      "brand": "MSI",
+      "category": "Computers",
+      "description": "icore 7 new fullsetjsbdksdkd",
+      "price": 45666,
+      "imageFilename": "1758541810990_22866337.jpg",
+      "createdAt": "2025-09-22T11:50:10.997Z",
+      "id": 2
     }
   ]
 }
